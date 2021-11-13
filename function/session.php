@@ -5,12 +5,13 @@
         $urlImports = "../";
         $urlPaginas = "";
     }else{
-        $urlPaginas = "pages/";
+        $urlPaginas = "paginas/";
         $urlImports = "";
     }
     include_once 'func.php';
     $db_connection = OpenCon();
-    $result = pg_query($db_connection, "SELECT * FROM produto");
+    return $db_connection;
+//    $result = pg_query($db_connection, "SELECT * FROM produto");
 //    while($res = pg_fetch_object($result)){
 //        echo $res->nome;
 ////        print_r($res);

@@ -1,12 +1,3 @@
-<?php 
-    if(isset($index)){ 
-        $urlPaginas = "paginas/";
-        $urlImports = "";
-    }else{
-        $urlImports = "../";
-        $urlPaginas = "";
-    }
-?>
     <link href="<?= $urlImports ?>css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
     <script src="<?= $urlImports ?>js/bootstrap.min.js"></script>
     <script src="<?= $urlImports ?>js/jquery-3.6.0.min.js"></script>
@@ -33,10 +24,15 @@
                           Cadastros
                         </a>
                         <ul class="dropdown-menu" aria-labelledby="navbarScrollingDropdown">
-                            <li><a class="dropdown-item" href="#">Produtos</a></li>
-                            <li><a class="dropdown-item" href="#">Tipo Produtos</a></li>
-                            <li><a class="dropdown-item" href="#">Impostos</a></li>
+                            <li><a class="dropdown-item" href="<?= $urlPaginas ?>produtos.php">Produtos</a></li>
+                            <li><a class="dropdown-item" href="<?= $urlPaginas ?>tprodutos.php">Tipo Produtos</a></li>
+                            <li><a class="dropdown-item" href="<?= $urlPaginas ?>impostos.php">Impostos</a></li>
                         </ul>
+                    </li>
+                </ul>
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link <?= ($_SESSION['btnMenu']=='alunos' ? "active":"") ?>" href="<?= $urlPaginas ?>alunos.php">Carrinho <?= "(2)" ?></a>
                     </li>
                 </ul>
               </div>
