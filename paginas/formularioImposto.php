@@ -11,7 +11,7 @@
     }
 ?>
 <div class="card-body">
-    <h5 class="card-title">Cadastro Imposto </h5>
+    <h5 class="card-title"> <?= isset($_POST['imp_id']) ? "Edição":"Cadastro" ?> de Imposto </h5>
     <form action="salvaImposto.php" method="post" id='formImposto'>
         <input type="hidden" id='impid' name="impid" value="<?= (isset($_POST['imp_id'])?$_POST['imp_id']:0); ?>">
         <input type="hidden" id='impidtproduto' name="impidtproduto" value="<?= $_POST['id_tprod']; ?>">

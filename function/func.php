@@ -27,3 +27,26 @@ function diff_Datas_YMD($data1,$data2){
     $diff=date_diff($date1,$date2);
     return $diff->format("%a");
 }
+
+function converteMoeda($value){
+     if (strpos($value, "0") == 0){
+         $value = str_replace(',', '.', $value);
+         $value = number_format($value, 2, ',', '.');
+         echo "R$ " . $value . " reais<br>";
+     }else{
+         $value = str_replace('.', '', $value);
+         $value = str_replace(',', '.', $value);
+         $value = number_format($value, 2, ',', '.');
+         echo "R$ " . $value . " reais<br>";
+     }
+}
+
+function calculaImpostoAplicado($valor, $imposto){
+//  Calcula o valor do imposto
+    $val1 = $valor*($imposto/100);
+//  Muda ponto para virgula e arredonda
+    $arr = array("Float"=>number_format($val1, 2, '.', ''));
+    $arr['String'] = number_format($val1, 2, ',', '.');
+    return $arr;
+    
+}

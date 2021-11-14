@@ -1,200 +1,84 @@
 <?php
 
-class Courses{
-//  Atributos
-    private $id;
-    private $nameCourse;
-    private $description;
-    private $dateStart;
-    private $dateFinish;
-    private $status;
-    private $created_at;
-    private $updated_at;
-    
-//  Geters e Seters  
-    function getId() {
-        return $this->id;
-    }
+class CProdutos{   
 
-    function getNameCourse() {
-        return $this->nameCourse;
-    }
-
-    function getDescription() {
-        return $this->description;
-    }
-
-    function getDateStart() {
-        return $this->dateStart;
-    }
-
-    function getDateFinish() {
-        return $this->dateFinish;
-    }
-
-    function getStatus() {
-        return $this->status;
-    }
-
-    function getCreated_at() {
-        return $this->created_at;
-    }
-
-    function getUpdated_at() {
-        return $this->updated_at;
-    }
-
-    function setId($id) {
-        $this->id = $id;
-    }
-
-    function setNameCourse($nameCourse) {
-        $this->nameCourse = $nameCourse;
-    }
-
-    function setDescription($description) {
-        $this->description = $description;
-    }
-
-    function setDateStart($dateStart) {
-        $this->dateStart = $dateStart;
-    }
-
-    function setDateFinish($dateFinish) {
-        $this->dateFinish = $dateFinish;
-    }
-
-    function setStatus($status) {
-        $this->status = $status;
-    }
-
-    function setCreated_at($created_at) {
-        $this->created_at = $created_at;
-    }
-
-    function setUpdated_at($updated_at) {
-        $this->updated_at = $updated_at;
-    }
-
-    function instanciaCurso($id = null, $nameCourse = null, $description = null, $dateStart = null, $dateFinish = null, $status = null,
-                            $created_at = null, $updated_at = null) {
-        $this->id = $id;
-        $this->nameCourse = $nameCourse;
-        $this->description = $description;
-        $this->dateStart = $dateStart;
-        $this->dateFinish = $dateFinish;
-        $this->status = $status;
-        $this->created_at = $created_at;
-        $this->updated_at = $updated_at;
-    }
-    
-    function select($mysqli,$id=0,$where=null){
-        $coursesQuery = "
+    function select($db_connection,$id=0,$where=null){
+        $produtoQuery = "
                     SELECT
                             *                        
                         FROM
-                            courses 
+                            produto
+                            left join tproduto on tpro_id = pro_id_tproduto
                         WHERE
                             0=0
                 ";
         
         if($id!=0){
-            $coursesQuery.= "
-                                and Id=".$id;"
+            $produtoQuery.= "
+                                and pro_id=".$id;"
                 ";
-            $coursesQuery.= $where;       
-            $coursesExe = $mysqli->query($coursesQuery);
-            $coursesLinha = mysqli_fetch_array($coursesExe);
-            $this->instanciaCurso(
-                                        $coursesLinha['id'],
-                                        $coursesLinha['nameCourse'],
-                                        $coursesLinha['description'],
-                                        $coursesLinha['dateStart'],
-                                        $coursesLinha['dateFinish'],
-                                        $coursesLinha['status'],
-                                        $coursesLinha['created_at'],
-                                        $coursesLinha['updated_at']
-                                    );
-//            print_r($this->getId());
-            return $this;
+            $produtoQuery.= " order by pro_id desc ";
+            $produtoQuery.= $where;   
+            $result = pg_query($db_connection, $produtoQuery);
+            $res = pg_fetch_object($result);
+            return $res;
+            
         }else{
-            $coursesQuery.= $where;
-            $coursesExe = $mysqli->query($coursesQuery);
-            $arrCourses = array();
-            while($coursesLinha = mysqli_fetch_array($coursesExe)){
-                $instanciaCourse = new Courses;
-//                print_r($coursesLinha);
-                $instanciaCourse->instanciaCurso(
-                                        $coursesLinha['id'],
-                                        $coursesLinha['nameCourse'],
-                                        $coursesLinha['description'],
-                                        $coursesLinha['dateStart'],
-                                        $coursesLinha['dateFinish'],
-                                        $coursesLinha['status'],
-                                        $coursesLinha['created_at'],
-                                        $coursesLinha['updated_at']
-                                    );
-                
-                $arrCourses[]=$instanciaCourse;
+            $produtoQuery.= $where;
+            $produtoQuery.= " order by pro_id desc ";
+            $result = pg_query($db_connection, $produtoQuery);
+            $arrProdutos = array();
+            while($res = pg_fetch_object($result)){
+                $arrProdutos[]=$res;
             }
-            return $arrCourses;
+            return $arrProdutos;
         }
     }
     
-    function update($mysqli){
-        $sqlUpdateCurso="
-            UPDATE  courses
-                SET 
-                    nameCourse = '".$this->nameCourse."',
-                    description = '".$this->description."',
-                    dateStart = '".$this->dateStart."',
-                    dateFinish = '".$this->dateFinish."',
-                    status = '".$this->status."',
-                    updated_at = CURRENT_TIMESTAMP()
-                WHERE 
-                    id = '".$this->id."';
+    function update($db_connection,$dados){
+        $sqlUpdateProdutos="
+            UPDATE 
+                    produto
+                SET
+                    pro_nome='".trim($dados['pro_nome'])."',
+                    pro_descricao='".trim($dados['pro_descricao'])."'
+                WHERE
+                    pro_id = '".$dados['pro_id']."';
             ";
-        
-//        echo $sqlUpdateCurso;
-        $mysqli->query($sqlUpdateCurso);
+        pg_query($db_connection, $sqlUpdateProdutos);
     }
     
-    function insert($mysqli){
-        $sqlInsertCurso="
-                INSERT
-                    INTO
-                        courses
-                                (
-                                    nameCourse,
-                                    description,
-                                    dateStart,
-                                    dateFinish,
-                                    status,
-                                    created_at
-                                )VALUES(
-                                    '".$this->nameCourse."',
-                                    '".$this->description."',
-                                    '".$this->dateStart."',
-                                    '".$this->dateFinish."',
-                                    '".$this->status."',
-                                    CURRENT_TIMESTAMP()
-                                );
+    function insert($db_connection,$dados){
+        
+        $sqlInsertProdutos="
+            INSERT 
+                INTO
+                    produto(
+                        pro_nome,
+                        pro_descricao
+                        )
+                    VALUES (
+                         '".trim($dados['pro_nome'])."',
+                         '".trim($dados['pro_descricao'])."'
+                    );
             ";
-//        echo $sqlInsertCurso;
-        $mysqli->query($sqlInsertCurso);
+        pg_query($db_connection, $sqlInsertProdutos);
     }
     
-    function ativaDesativa($mysqli){
-         $sqlUpdateCurso="
-            UPDATE  courses
-                SET 
-                    status = if(status=1,0,1)
-                WHERE 
-                    id = '".$this->id."';
-            ";
+    function delete($db_connection , $id){
+//      Deleta o tipo de produto e seus impostos, normalmente eu apenas teria um flag de status e faria update
+//      mas como o teste é do estilo CRUD, vamos fazer tudo do geito classico
         
-//        echo $sqlUpdateCurso;
-        $mysqli->query($sqlUpdateCurso);
+        $sqlDeleteProduto="
+             DELETE 
+                FROM 
+                    produto
+                WHERE
+                    pro_id = '".$id."';
+            ";
+        pg_query($db_connection, $sqlDeleteProduto);
+        
+
     }
 
 }

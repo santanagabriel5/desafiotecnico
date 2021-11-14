@@ -1,66 +1,99 @@
 <?php 
     include_once "../function/session.php";
-    include_once "../Classes/CCourses.php";
+    include_once "../Classes/CProdutos.php";
     
     $tituloPagina="Produtos";
     $_SESSION['btnMenu']='Cadastro';
     include_once 'Header.php';
     
-//  PESQUISANDO Cursos NO BANCO
-//    $CCourses = new Courses();
-//    $arrCourses= $CCourses->select($mysqli);
-
+//  PESQUISANDO produtos NO BANCO
+    $CProdutos = new CProdutos();
+    $arrProdutos= $CProdutos->select($db_connection);
 ?>
 <div class="card" style="margin-top: 15px">
   <div class="card-body">
-    <h5 class="card-title">Cursos</h5>
-    <button type="button" class="btn btn-primary" onclick="location.href='formularioCurso.php'">Adicionar novo Curso</button>
+    <h5 class="card-title">Produtos</h5>
+    <button type="button" class="btn btn-primary" onclick="location.href='formularioTProduto.php'">Adicionar novo produto</button>
     <table class="table table-striped" style="margin-top: 15px">
         <tr>
             <th>Id</th>
             <th>Nome</th>
+            <th>Descrição</th>
             <th></th>
         </tr>
             <?php 
-//            print_r($arrCourses);
-                foreach($arrCourses as  $course){
+                foreach($arrProdutos as  $Produto){
             ?>
-                <tr>
-                    <td><?= $course->getId() ?></td>
-                    <td><?= $course->getNameCourse() ?></td>
+                <tr id='tr_<?= $Produto->pro_id ?>'>
+                    <td ><?= $Produto->pro_id ?></td>
+                    <td><?= $Produto->pro_nome ?></td>
+                    <td><?= $Produto->pro_descricao ?></td>
                     <td>
-                        <a href="curso.php?id=<?= $course->getId() ?>" class="btn btn-primary">Visualizar</a>
-                        <a href="formularioCurso.php?id=<?= $course->getId() ?>" class="btn btn-warning">Editar</a>
-                        <?php 
-                            if($course->getStatus()==1){
-                        ?>
+                        <a id="<?= $Produto->pro_id ?>" class="btn btn-primary btnVisualizarProduto">Visualizar</a>
+                        <a href="formularioProduto.php?id=<?= $Produto->pro_id ?>" class="btn btn-warning">Editar</a>
                         <a href="#" onclick="
-                            if (confirm('Deseja realmente desativar o curso <?= $course->getNameCourse() ?> ?')) {
-                                window.location='ativaDesativaCursos.php?Id=<?= $course->getId() ?>&pagina=cursos';
+                            if (confirm('Deseja realmente deletar o produto <?= $Produto->pro_nome ?> e seus impostos ?')) {
+                                deletaTproduto('<?= $Produto->tpro_id ?>');
                             }
-                           " class="btn btn-danger">Desativar</a>
-                        <?php 
-                            }else{
-                        ?>
-                            <a href="#" class="btn btn-success"
-                               onclick="
-                                        if (confirm('Deseja realmente ativar o curso <?= $course->getNameCourse() ?> ?')) {
-                                            window.location='ativaDesativaCursos.php?Id=<?= $course->getId() ?>&pagina=cursos';
-                                        }
-                                       "
-                            >Ativar</a>
-                        <?php 
-                            }
-                        ?>
+                           "class="btn btn-danger">Excluir</a>
                     </td>
                 </tr>
+                
             <?php 
                 }
             ?>
     </table>
   </div>
 </div>
+<script>
+    function deletaproduto(id){
+        $.ajax({
+            type: "POST",
+            url: "deletaProduto.php",
+            cache: false,
+            data: {
+                id:id
+            },
+            dataType: "json",
+            success: function (json) {
+                alert('Excluido com sucesso');
+                $("#tr_"+id).hide();
+            },error: function(xhr, status, error) {
+                alert(xhr.responseText);
+            }
+        });
+    }
+    $(document).ready(function(){
+        $(document).on('click', '.btnVisualizarProduto', function (evt) {
+            btn = $(this);
 
+            $.ajax({
+                type: "POST",
+                url: "viewProduto.php",
+                cache: false,
+                data: {
+                    pro_id:btn.attr('id')
+                },
+                dataType: "html",
+                success: function (html) {
+                    $(html).insertAfter(btn.closest('tr'));
+                    btn.removeClass(" btnVisualizarProduto ");
+                    btn.addClass(" btnDesVisualizarProduto ");
+                    btn.html("Esconder");
+                },error: function(xhr, status, error) {
+                    alert(xhr.responseText);
+                }
+            });
+        });
+        $(document).on('click', '.btnDesVisualizarProduto', function (evt) {
+            btn = $(this);
+            btn.addClass(" btnVisualizarProduto ");
+            btn.removeClass(" btnDesVisualizarProduto ");
+            btn.html("Visualizar");
+            $("#tr_info_"+btn.attr("id")).remove();
+        });
+    });
+</script>
 
 <?php
     include_once 'Footer.php';
