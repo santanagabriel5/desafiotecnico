@@ -17,7 +17,7 @@
         <input type="hidden" id='impidtproduto' name="impidtproduto" value="<?= $_POST['id_tprod']; ?>">
         <div class="mb-3">
             <label for="nome" class="form-label">Nome</label>
-            <input type="text" id='impnome' required name="impnome"
+            <input required type="text" id='impnome' required name="impnome"
                 <?php 
                     if(isset($_POST['imp_id'])){
                         echo "Value='".trim($Impostos->imp_nome)."'";
@@ -27,13 +27,13 @@
         </div>
         <div class="mb-3">
             <label for="nome" class="form-label">Porcentagem</label>
-            <input type="text" id='impporcentagem' required name="impporcentagem"
+            <input required type="text" id='impporcentagem' required name="impporcentagem"
                 <?php 
                     if(isset($_POST['imp_id'])){
                         echo "Value='".trim($Impostos->imp_porcentagem)."'";
                     }
                 ?>  
-           class="form-control" placeholder="Digite apenas a porcentagem.">
+           class="form-control" placeholder="Digite apenas o valor porcentagem.">
         </div>
         <button type="submit" class="btn btn-primary">Salvar</button>
         <button type="button" onclick="cancelarCadastroImposto()" class="btn btn-warning">Cancelar</button>
@@ -43,11 +43,9 @@
     function checkKey() {
         var clean = this.value.replace(/[^0-9,]/g, "")
                                .replace(/(,.*?),(.*,)?/, "$1");
-        // don't move cursor to end if no change
         if (clean !== this.value) this.value = clean;
     }
 
-    // demo
     document.querySelector('#impporcentagem').oninput = checkKey;
     $('#formImposto').on('submit',function (e) {
         impid = $("#impid").val();

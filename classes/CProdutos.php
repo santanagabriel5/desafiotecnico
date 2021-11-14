@@ -36,33 +36,42 @@ class CProdutos{
     }
     
     function update($db_connection,$dados){
-        $sqlUpdateProdutos="
+        $sqlUpdateProduto="
             UPDATE 
                     produto
                 SET
                     pro_nome='".trim($dados['pro_nome'])."',
-                    pro_descricao='".trim($dados['pro_descricao'])."'
+                    pro_valor='".trim($dados['pro_valor'])."',
+                    pro_descricao='".trim($dados['pro_descricao'])."',
+                    pro_id_tproduto='".trim($dados['pro_id_tproduto'])."', 
+                    pro_peso='".trim($dados['pro_peso'])."'
                 WHERE
                     pro_id = '".$dados['pro_id']."';
             ";
-        pg_query($db_connection, $sqlUpdateProdutos);
+        pg_query($db_connection, $sqlUpdateProduto);
     }
     
     function insert($db_connection,$dados){
         
-        $sqlInsertProdutos="
+        $sqlInsertProduto="
             INSERT 
                 INTO
                     produto(
                         pro_nome,
-                        pro_descricao
+                        pro_valor,
+                        pro_descricao,
+                        pro_id_tproduto, 
+                        pro_peso
                         )
                     VALUES (
                          '".trim($dados['pro_nome'])."',
-                         '".trim($dados['pro_descricao'])."'
+                         '".trim($dados['pro_valor'])."',
+                         '".trim($dados['pro_descricao'])."',
+                         '".trim($dados['pro_id_tproduto'])."',
+                         '".trim($dados['pro_peso'])."'
                     );
             ";
-        pg_query($db_connection, $sqlInsertProdutos);
+        pg_query($db_connection, $sqlInsertProduto);
     }
     
     function delete($db_connection , $id){

@@ -13,7 +13,7 @@
 <div class="card" style="margin-top: 15px">
   <div class="card-body">
     <h5 class="card-title">Produtos</h5>
-    <button type="button" class="btn btn-primary" onclick="location.href='formularioTProduto.php'">Adicionar novo produto</button>
+    <button type="button" class="btn btn-primary" onclick="location.href='formularioProduto.php'">Adicionar novo produto</button>
     <table class="table table-striped" style="margin-top: 15px">
         <tr>
             <th>Id</th>
@@ -32,8 +32,8 @@
                         <a id="<?= $Produto->pro_id ?>" class="btn btn-primary btnVisualizarProduto">Visualizar</a>
                         <a href="formularioProduto.php?id=<?= $Produto->pro_id ?>" class="btn btn-warning">Editar</a>
                         <a href="#" onclick="
-                            if (confirm('Deseja realmente deletar o produto <?= $Produto->pro_nome ?> e seus impostos ?')) {
-                                deletaTproduto('<?= $Produto->tpro_id ?>');
+                            if (confirm('Deseja realmente deletar o produto <?= $Produto->pro_nome ?> ?')) {
+                                deletaproduto('<?= $Produto->pro_id ?>');
                             }
                            "class="btn btn-danger">Excluir</a>
                     </td>
@@ -66,7 +66,7 @@
     $(document).ready(function(){
         $(document).on('click', '.btnVisualizarProduto', function (evt) {
             btn = $(this);
-
+            btn.prop("disabled",true);
             $.ajax({
                 type: "POST",
                 url: "viewProduto.php",
@@ -80,6 +80,7 @@
                     btn.removeClass(" btnVisualizarProduto ");
                     btn.addClass(" btnDesVisualizarProduto ");
                     btn.html("Esconder");
+                    btn.prop("disabled",false);
                 },error: function(xhr, status, error) {
                     alert(xhr.responseText);
                 }

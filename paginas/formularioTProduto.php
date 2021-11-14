@@ -22,7 +22,7 @@
             <input type="hidden" name="id" value="<?= (isset($_GET['id'])?$_GET['id']:0); ?>">
             <div class="mb-3">
                 <label for="nome" class="form-label">Nome</label>
-                <input type="text" required name="nome"
+                <input required type="text" required name="nome"
                     <?php 
                         if(isset($_GET['id'])){
                             echo "Value='".trim($TProduto->tpro_nome)."'";
@@ -32,7 +32,7 @@
             </div>
             <div class="mb-3">
                 <label for="descricao" class="form-label">Descrição</label>
-                <textarea class="form-control" name="descricao" rows="3" maxlength="149"><?php 
+                <textarea required class="form-control" name="descricao" rows="3" maxlength="149"><?php 
                         if(isset($_GET['id'])){
                             echo trim($TProduto->tpro_descricao);
                         }
