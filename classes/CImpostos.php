@@ -1,4 +1,5 @@
 <?php
+    error_reporting(-1);
 
 class CImpostos{
 //  Atributos
@@ -54,7 +55,6 @@ class CImpostos{
             $impostoQuery.= "
                                 and imp_id=".$id;"
                 ";
-            $impostoQuery.= " order by tpro_id desc ";
             $impostoQuery.= $where;   
             $result = pg_query($db_connection, $impostoQuery);
             $res = pg_fetch_object($result);
@@ -100,9 +100,10 @@ class CImpostos{
                         '".trim($dados['impidtproduto'])."',
                         '".trim($dados['impnome'])."',
                         '".trim($dados['impporcentagem'])."'
-                    );
+                    ) RETURNING imp_id;
             ";
-        pg_query($db_connection, $sqlInsertImpostos);
+        $id = pg_query($db_connection, $sqlInsertImpostos);
+        return $id;
     }
     
     function delete($db_connection , $id){

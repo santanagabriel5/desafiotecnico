@@ -75,19 +75,22 @@
                 <tr>
                     <th colspan="3"  style="text-align:center">Impostos</th>
                 </tr>
-                <tr>
-                    <th>Nome</th>
-                    <th>Porcentagem</th>
-                    <th></th>
-                </tr>
+                <thead>
+                    <tr>
+                        <th>Nome</th>
+                        <th>Porcentagem</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody id="list-imp">
                 <?php 
                     foreach($arrImpostos as $Imp){
                 ?>  
                     <tr id="tr_imposto_<?= $Imp->imp_id ?>">
                         <td><?= $Imp->imp_nome ?></td>
-                        <td><?= $Imp->imp_porcentagem ?> %</td>
+                        <td><?= str_replace('.', ',', $Imp->imp_porcentagem);  ?> %</td>
                         <td>
-                            <a href="formularioTProduto.php?id=<?= $TProdutos->tpro_id ?>" class="btn btn-warning editar_imposto">Editar</a>
+                            <a id="<?= $Imp->imp_id ?>" class="btn btn-warning btnEditaImposto">Editar</a>
                             <a href="#" onclick="
                                 if (confirm('Deseja realmente deletar o imposto <?= $Imp->imp_nome ?> ?')) {
                                     deletaImposto('<?= $Imp->imp_id ?>');
@@ -98,6 +101,7 @@
                 <?php 
                     }
                 ?>
+                </tbody>
             </table>
         </div>
     </div>
@@ -114,6 +118,7 @@
             success: function (json) {
                 alert('Imposto excluido com sucesso');
                 $("#tr_imposto_"+id).hide();
+                cancelarCadastroImposto();
             },error: function(xhr, status, error) {
                 alert(xhr.responseText);
             }
@@ -134,6 +139,26 @@
                 cache: false,
                 data: {
                     id_tprod:'<?= $_GET['id'] ?>'
+                },
+                dataType: "html",
+                success: function (html) {
+                    $("#divFormImposto").html(html);
+                    $("#divFormImposto").show();
+                },error: function(xhr, status, error) {
+                    alert(xhr.responseText);
+                }
+            });
+        });
+//        $(".btnEditaImposto").click(function(){
+        $(document).on('click', '.btnEditaImposto', function (evt) {
+            imp_id = $(this).attr('id');
+            $.ajax({
+                type: "POST",
+                url: "formularioImposto.php",
+                cache: false,
+                data: {
+                    id_tprod:'<?= $_GET['id'] ?>',
+                    imp_id:imp_id
                 },
                 dataType: "html",
                 success: function (html) {
