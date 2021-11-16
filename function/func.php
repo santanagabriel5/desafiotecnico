@@ -50,3 +50,9 @@ function calculaImpostoAplicado($valor, $imposto){
     return $arr;
     
 }
+
+function pe($var){
+    echo "<pre>";
+    print_r($var);
+    echo "</pre>";
+}

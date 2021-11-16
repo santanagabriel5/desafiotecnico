@@ -15,7 +15,7 @@ class CProdutos{
         
         if($id!=0){
             $produtoQuery.= "
-                                and pro_id=".$id;"
+                                and pro_id=".$id."
                 ";
             $result = pg_query($db_connection, $produtoQuery);
             $res = pg_fetch_object($result);

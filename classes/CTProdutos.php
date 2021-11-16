@@ -14,7 +14,7 @@ class CTProdutos{
         
         if($id!=0){
             $tprodutoQuery.= "
-                                and tpro_id=".$id;"
+                                and tpro_id=".$id."
                 ";
             $tprodutoQuery.= " order by tpro_id desc ";
             $tprodutoQuery.= $where;   

@@ -7,29 +7,25 @@ class CVenda{
                     SELECT
                             *                        
                         FROM
-                            produto
-                            left join tproduto on tpro_id = pro_id_tproduto
+                            venda
                         WHERE
                             0=0
                 ";
         
         if($id!=0){
-            $produtoQuery.= "
-                                and pro_id=".$id;"
-                ";
+            $produtoQuery.= " and ven_id=".$id." ";
             $result = pg_query($db_connection, $produtoQuery);
             $res = pg_fetch_object($result);
             return $res;
             
         }else{
             $produtoQuery.= $where;
-//            $produtoQuery.= " order by pro_id desc ";
             $result = pg_query($db_connection, $produtoQuery);
-            $arrProdutos = array();
+            $arrVendas = array();
             while($res = pg_fetch_object($result)){
-                $arrProdutos[]=$res;
+                $arrVendas[]=$res;
             }
-            return $arrProdutos;
+            return $arrVendas;
         }
     }
     

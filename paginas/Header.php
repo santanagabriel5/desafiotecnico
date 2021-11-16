@@ -36,6 +36,9 @@
                             <li><a class="dropdown-item" href="<?= $urlPaginas ?>impostos.php">Impostos</a></li>
                         </ul>
                     </li>
+                    <li class="nav-item">
+                        <a class="nav-link <?= ($_SESSION['btnMenu']=='RelVendas' ? "active":"") ?>" href="<?= $urlPaginas ?>vendas.php">Rel.Vendas</a>
+                    </li>
                 </ul>
               </div>
             </div>

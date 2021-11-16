@@ -3,44 +3,7 @@
 
 class CImpostos{
 //  Atributos
-    private $imp_id;
-    private $imp_nome;
-    private $imp_id_produto;
-    private $imp_procentagem;
 
-    function getImp_id() {
-        return $this->imp_id;
-    }
-
-    function getImp_nome() {
-        return $this->imp_nome;
-    }
-
-    function getImp_id_produto() {
-        return $this->imp_id_produto;
-    }
-
-    function getImp_procentagem() {
-        return $this->imp_procentagem;
-    }
-
-    function setImp_id($imp_id) {
-        $this->imp_id = $imp_id;
-    }
-
-    function setImp_nome($imp_nome) {
-        $this->imp_nome = $imp_nome;
-    }
-
-    function setImp_id_produto($imp_id_produto) {
-        $this->imp_id_produto = $imp_id_produto;
-    }
-
-    function setImp_procentagem($imp_procentagem) {
-        $this->imp_procentagem = $imp_procentagem;
-    }
-
-    
     function select($db_connection,$id=0,$where=null){
         $impostoQuery = "
                     SELECT
@@ -53,7 +16,7 @@ class CImpostos{
         
         if($id!=0){
             $impostoQuery.= "
-                                and imp_id=".$id;"
+                                and imp_id=".$id."
                 ";
             $impostoQuery.= $where;   
             $result = pg_query($db_connection, $impostoQuery);
