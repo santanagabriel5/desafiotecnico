@@ -18,12 +18,16 @@
                   <tr>
                         <td style="padding: 2px"><h6 class="card-subtitle mb-2 text-muted" ><b>Valor:</b> <?= converteMoeda($Produto->pro_valor) ?></h6></td>
                         <td style="padding: 2px"><h6 class="card-subtitle mb-2 text-muted" ><b>Peso:</b> <?= $Produto->pro_peso ?>g</h6></td>
+                        <td style="padding: 2px"><h6 class="card-subtitle mb-2 text-muted" ><b>Qtd:</b> <?= $Produto->pro_qtd ?></h6></td>
                         <td style="padding: 2px"><h6 class="card-subtitle mb-2 text-muted" ><b>Tipo de Produto:</b> <?= $Produto->tpro_nome ?></h6></td>
-                        <td style="padding: 2px"><h6 class="card-subtitle mb-2 text-muted" ><b>Impostos:</b></h6></td>
-                        <?php
+                        <?php 
                             $arrImpostos= $CImpostos->select($db_connection,0," and imp_id_tproduto = '".$Produto->tpro_id."' ");
                             $x=0;
-                            foreach($arrImpostos as $index=>$Imp){
+                            if(count($arrImpostos)>0){
+                        ?>
+                            <td style="padding: 2px"><h6 class="card-subtitle mb-2 text-muted" ><b>Impostos:</b></h6></td>
+                        <?php
+                                foreach($arrImpostos as $index=>$Imp){
                         ?>
                             <td style="padding: 2px">
                                 <h6 class="card-subtitle mb-2 text-muted" >
@@ -43,13 +47,15 @@
                                 </h6>
                             </td>
                         <?php
-                            }
+                                }
                         ?>  
                         <td style="padding: 2px"><h6 class="card-subtitle mb-2 text-muted" ><b>Total Impostos:</b> <?= converteMoeda($vTotalImpostos) ?></h6></td>
-
+                        <?php
+                            }
+                        ?>  
                   </tr>
                   <tr>
-                      <td style="padding: 2px" colspan="3"><h6 class="card-subtitle mb-2 text-muted" ><b>Descrição:</b> <?= $Produto->pro_descricao ?></h6></td>
+                      <td style="padding: 2px" colspan="4"><h6 class="card-subtitle mb-2 text-muted" ><b>Descrição:</b> <?= $Produto->pro_descricao ?></h6></td>
                   </tr>
               </table>
           </div>

@@ -34,7 +34,7 @@ function converteMoeda($value){
          $value = number_format($value, 2, ',', '.');
          echo "R$ " . $value . " reais<br>";
      }else{
-         $value = str_replace('.', '', $value);
+//         $value = str_replace('.', '', $value);
          $value = str_replace(',', '.', $value);
          $value = number_format($value, 2, ',', '.');
          echo "R$ " . $value . " reais<br>";

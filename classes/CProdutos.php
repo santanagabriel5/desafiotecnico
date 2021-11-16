@@ -17,15 +17,13 @@ class CProdutos{
             $produtoQuery.= "
                                 and pro_id=".$id;"
                 ";
-            $produtoQuery.= " order by pro_id desc ";
-            $produtoQuery.= $where;   
             $result = pg_query($db_connection, $produtoQuery);
             $res = pg_fetch_object($result);
             return $res;
             
         }else{
             $produtoQuery.= $where;
-            $produtoQuery.= " order by pro_id desc ";
+//            $produtoQuery.= " order by pro_id desc ";
             $result = pg_query($db_connection, $produtoQuery);
             $arrProdutos = array();
             while($res = pg_fetch_object($result)){
@@ -47,6 +45,18 @@ class CProdutos{
                     pro_peso='".trim($dados['pro_peso'])."'
                 WHERE
                     pro_id = '".$dados['pro_id']."';
+            ";
+        pg_query($db_connection, $sqlUpdateProduto);
+    }
+    function adicionarEstoque($db_connection,$pro_qtd,$pro_id){
+        $sqlUpdateProduto="
+            UPDATE 
+                    produto
+                SET
+                    pro_qtd= (pro_qtd + ".$pro_qtd.")
+                    
+                WHERE
+                    pro_id = '".$pro_id."';
             ";
         pg_query($db_connection, $sqlUpdateProduto);
     }

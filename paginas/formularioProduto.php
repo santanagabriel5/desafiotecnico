@@ -67,7 +67,11 @@
                         $arrTProdutos= $CTProdutos->select($db_connection);
                         foreach($arrTProdutos as $TProdutos){
                     ?>
-                        <option <?= $TProdutos->tpro_id == $Produto->pro_id_tproduto ? "Selected":""  ?> value="<?= $TProdutos->tpro_id ?>"><?= $TProdutos->tpro_nome ?></option>
+                        <option <?php
+                            if(isset($_GET['id']) && $TProdutos->tpro_id == $Produto->pro_id_tproduto){
+                                echo "Selected";
+                            }
+                            ?> value="<?= $TProdutos->tpro_id ?>"><?= $TProdutos->tpro_nome ?></option>
                     <?php 
                         }
                     ?>

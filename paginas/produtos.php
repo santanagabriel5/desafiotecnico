@@ -8,7 +8,7 @@
     
 //  PESQUISANDO produtos NO BANCO
     $CProdutos = new CProdutos();
-    $arrProdutos= $CProdutos->select($db_connection);
+    $arrProdutos= $CProdutos->select($db_connection,0,' order by pro_id desc ');
 ?>
 <div class="card" style="margin-top: 15px">
   <div class="card-body">
@@ -66,7 +66,7 @@
     $(document).ready(function(){
         $(document).on('click', '.btnVisualizarProduto', function (evt) {
             btn = $(this);
-            btn.prop("disabled",true);
+            carregando();
             $.ajax({
                 type: "POST",
                 url: "viewProduto.php",
@@ -80,7 +80,7 @@
                     btn.removeClass(" btnVisualizarProduto ");
                     btn.addClass(" btnDesVisualizarProduto ");
                     btn.html("Esconder");
-                    btn.prop("disabled",false);
+                    carregando();
                 },error: function(xhr, status, error) {
                     alert(xhr.responseText);
                 }
