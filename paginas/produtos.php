@@ -1,19 +1,27 @@
 <?php 
     include_once "../function/session.php";
     include_once "../Classes/CProdutos.php";
+    include_once "../Classes/CTProdutos.php";
     
     $tituloPagina="Produtos";
     $_SESSION['btnMenu']='Cadastro';
     include_once 'Header.php';
     
 //  PESQUISANDO produtos NO BANCO
+    $CTProdutos = new CTProdutos();
     $CProdutos = new CProdutos();
-    $arrProdutos= $CProdutos->select($db_connection,0,' order by pro_id desc ');
+    $arrProdutos = $CProdutos->select($db_connection,0,' order by pro_id desc ');
+    $arrTProdutos = $CTProdutos->select($db_connection);
 ?>
 <div class="card" style="margin-top: 15px">
   <div class="card-body">
     <h5 class="card-title">Produtos</h5>
-    <button type="button" class="btn btn-primary" onclick="location.href='formularioProduto.php'">Adicionar novo produto</button>
+    <?php if(count($arrTProdutos)==0){ ?>
+        <button type="button" class="btn btn-primary" disabled>Adicionar novo produto</button>
+        <br><small  class="form-text text-muted">É ncessario pelo menos 1 tipo de produto cadastrado para inserçãode produtos.</small>
+    <?php  }else{ ?>
+        <button type="button" class="btn btn-primary" onclick="location.href='formularioProduto.php'">Adicionar novo produto</button>
+    <?php } ?>
     <table class="table table-striped" style="margin-top: 15px">
         <tr>
             <th>Id</th>

@@ -33,7 +33,6 @@
                         <ul class="dropdown-menu" aria-labelledby="navbarScrollingDropdown">
                             <li><a class="dropdown-item" href="<?= $urlPaginas ?>produtos.php">Produtos</a></li>
                             <li><a class="dropdown-item" href="<?= $urlPaginas ?>tprodutos.php">Tipo Produtos</a></li>
-                            <li><a class="dropdown-item" href="<?= $urlPaginas ?>impostos.php">Impostos</a></li>
                         </ul>
                     </li>
                     <li class="nav-item">
